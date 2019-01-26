@@ -1,9 +1,14 @@
 var fs = require('fs');
-
+var path = require('path');
+    
 //create test directory
-fs.mkdirSync('foo');
-fs.mkdirSync('./foo/bar');
-fs.writeFileSync('./foo/bar/baz.txt', 'yellow submarine');
+try {
+    fs.mkdirSync('foo');
+    fs.mkdirSync('./foo/bar');
+    fs.writeFileSync('./foo/bar/baz.txt', 'yellow submarine');
+} catch(e) {
+    //
+}
 
 /*
 //unsync draft, need semaphore?
@@ -21,7 +26,7 @@ function recursiveRmdir(directory){
           //remove file
           console.log('removing file: ' + filePath);
           fs.unlink(filePath, function(err) {
-          	console.log('removed file: ' + filePath);
+                console.log('removed file: ' + filePath);
           });
         }
       });
@@ -31,21 +36,24 @@ function recursiveRmdir(directory){
 */
 
 //synchronous recusiveRmdir
-var recursiveRmdirSync = function (directory){
+var rmdirSync= function (directory){
   console.log('recursively removing directory: ' + directory);
+
+  files = fs.readdirSync(directory);
   
-  fs.readdir(directory, function(err, files){
-    for(const file of files){
-      let filePath = path.join(directory, file);
-      let stats = fs.statSync(filePath);
-      if(stats.isDirectory()){
-        recusiveRmdir(filePath);
-      } else {
-        fs.unlinkSync(filePath);
-      }
+  for(const file of files){
+    let filePath = path.join(directory, file);
+    console.log(filePath);
+    let stats = fs.statSync(filePath);
+    if(stats.isDirectory()){
+      rmdirSync(filePath);
+    } else {
+      fs.unlinkSync(filePath);
     }
-  });
+  }
+  fs.rmdirSync(directory);
   console.log('recusively removed directory: ' + directory);
 }
 
-module.exports.recursiveRmdirSync = recursiveRmdirSync;
+rmdirSync('foo');
+module.exports.rmdirSync = rmdirSync;
