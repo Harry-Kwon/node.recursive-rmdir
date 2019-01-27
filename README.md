@@ -3,6 +3,7 @@
 ## Description
 
 Removes a directory and all its child directories and contained files recursively.
+
 Effectively identical to the "rm -rf" command.
 
 ---
