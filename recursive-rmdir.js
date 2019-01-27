@@ -1,14 +1,6 @@
 var fs = require('fs');
 var path = require('path');
     
-//create test directory
-try {
-    fs.mkdirSync('foo');
-    fs.mkdirSync('./foo/bar');
-    fs.writeFileSync('./foo/bar/baz.txt', 'yellow submarine');
-} catch(e) {
-    //
-}
 
 /*
 //unsync draft, need semaphore?
@@ -55,5 +47,14 @@ var rmdirSync= function (directory){
   console.log('recusively removed directory: ' + directory);
 }
 
-rmdirSync('foo');
+//create test directory
+try {
+  fs.mkdirSync('foo');
+  fs.mkdirSync('./foo/bar');
+  fs.writeFileSync('./foo/bar/baz.txt', 'yellow submarine');
+  rmdirSync('foo');
+} catch(e) {
+    //
+}
+
 module.exports.rmdirSync = rmdirSync;
